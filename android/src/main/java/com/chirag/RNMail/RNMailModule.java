@@ -99,8 +99,8 @@ public class RNMailModule extends ReactContextBaseJavaModule {
 
     ResolveInfo best = null;
     for (final ResolveInfo info : list) {
-      if (info.activityInfo.packageName.toLowerCase().endsWith("outlook") ||
-        info.activityInfo.name.toLowerCase().contains("office")) 
+      if (info.activityInfo.packageName.toLowerCase().endsWith("outlook") &&
+        info.activityInfo.packageName.toLowerCase().contains("office")) 
         best = info;
     }
 
