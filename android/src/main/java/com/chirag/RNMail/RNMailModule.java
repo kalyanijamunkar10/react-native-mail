@@ -97,26 +97,41 @@ public class RNMailModule extends ReactContextBaseJavaModule {
     PackageManager manager = reactContext.getPackageManager();
     List<ResolveInfo> list = manager.queryIntentActivities(i, 0);
 
-    if (list == null || list.size() == 0) {
-      callback.invoke("not_available");
-      return;
+    ResolveInfo best = null;
+    for (final ResolveInfo info : list) {
+      if (info.activityInfo.packageName.toLowerCase().endsWith("outlook") ||
+        info.activityInfo.name.toLowerCase().contains("outlook")) 
+        best = info;
     }
 
-    if (list.size() == 1) {
+    if (best != null) {
+      i.setClassName(best.activityInfo.packageName, best.activityInfo.name);
       i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+      reactContext.startActivity(i);
+    } else {
+    
+
+      if (list == null || list.size() == 0) {
+        callback.invoke("not_available");
+        return;
+      }
+
+      if (list.size() == 1) {
+        i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
       try {
         reactContext.startActivity(i);
       } catch (Exception ex) {
         callback.invoke("error");
       }
-    } else {
-      Intent chooser = Intent.createChooser(i, "Send Mail");
-      chooser.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+      } else {
+        Intent chooser = Intent.createChooser(i, "Send Mail");
+        chooser.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 
-      try {
-        reactContext.startActivity(chooser);
-      } catch (Exception ex) {
-        callback.invoke("error");
+        try {
+          reactContext.startActivity(chooser);
+        } catch (Exception ex) {
+          callback.invoke("error");
+        }
       }
     }
   }
