@@ -135,7 +135,7 @@ RCT_EXPORT_METHOD(mail:(NSDictionary *)options
             // Add attachment
             [mail addAttachmentData:fileData mimeType:mimeType fileName:attachmentName];
         }
-        NSString *customURL = @"googlegmail://";
+        NSString *customURL = @"ms-outlook://";
 
                if ([[UIApplication sharedApplication]
                canOpenURL:[NSURL URLWithString:customURL]])
