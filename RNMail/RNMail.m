@@ -135,13 +135,13 @@ RCT_EXPORT_METHOD(mail:(NSDictionary *)options
             // Add attachment
             [mail addAttachmentData:fileData mimeType:mimeType fileName:attachmentName];
         }
+        NSString *customURL = @"googlegmail://";
 
-        UIViewController *root = [[[[UIApplication sharedApplication] delegate] window] rootViewController];
-
-        while (root.presentedViewController) {
-            root = root.presentedViewController;
-        }
-        [root presentViewController:mail animated:YES completion:nil];
+               if ([[UIApplication sharedApplication]
+               canOpenURL:[NSURL URLWithString:customURL]])
+               {
+                 [[UIApplication sharedApplication] openURL:[NSURL URLWithString:customURL]];
+               }
     } else {
         callback(@[@"not_available"]);
     }
